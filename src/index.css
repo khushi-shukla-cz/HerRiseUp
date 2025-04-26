@@ -1,0 +1,99 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 258 100% 98%;
+    --foreground: 224 71% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+
+    --primary: 250 82% 75%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 260 29% 54%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 258 30% 95%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 258 30% 95%;
+    --accent-foreground: 224 71% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 258 30% 90%;
+    --input: 258 30% 90%;
+    --ring: 250 82% 75%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 210 40% 98%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 250 82% 75%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 260 29% 54%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 217 33% 18%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 250 82% 75%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom Components Styles */
+@layer components {
+  .chat-bubble {
+    @apply rounded-2xl p-4 max-w-[80%] shadow-sm animate-fade-in;
+  }
+  
+  .chat-bubble-user {
+    @apply bg-career-primary text-white ml-auto rounded-br-none;
+  }
+  
+  .chat-bubble-bot {
+    @apply bg-white text-career-dark mr-auto rounded-bl-none border border-career-soft;
+  }
+  
+  .suggestion-chip {
+    @apply px-4 py-2 rounded-full text-sm bg-white border border-career-soft 
+           text-career-secondary hover:bg-career-soft hover:border-career-secondary
+           transition-colors duration-200 whitespace-nowrap;
+  }
+}
