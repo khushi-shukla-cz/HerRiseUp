@@ -88,6 +88,25 @@ npm install
 npm run dev
 ```
 
+## Deployment on Vercel
+
+This project is configured for easy deployment on Vercel. Follow these steps:
+
+1. Fork or clone this repository to your GitHub account
+2. Sign up or log in to [Vercel](https://vercel.com)
+3. Click "New Project" and import your GitHub repository
+4. Configure the following environment variables in the Vercel dashboard:
+   - `VITE_OPENAI_API_KEY`: Your OpenAI API key
+   - `VITE_SUPABASE_URL`: Your Supabase URL
+   - `VITE_SUPABASE_ANON_KEY`: Your Supabase anonymous key
+5. Click "Deploy"
+
+The project includes a `vercel.json` configuration file that handles:
+- SPA routing for React Router
+- Proper caching for static assets
+- Security headers
+- Build and output directory settings
+
 ## Technologies Used
 
 This project is built with:
