@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -81,6 +80,9 @@
 @layer components {
   .chat-bubble {
     @apply rounded-2xl p-4 max-w-[80%] shadow-sm animate-fade-in;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    min-width: 120px;
   }
   
   .chat-bubble-user {
@@ -95,5 +97,17 @@
     @apply px-4 py-2 rounded-full text-sm bg-white border border-career-soft 
            text-career-secondary hover:bg-career-soft hover:border-career-secondary
            transition-colors duration-200 whitespace-nowrap;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar but allow scrolling */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
   }
 }

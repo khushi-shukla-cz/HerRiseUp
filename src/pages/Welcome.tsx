@@ -1,16 +1,40 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@/contexts/SessionContext';
+import { useAchievement } from '@/contexts/AchievementContext';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from '@/components/ui/use-toast';
+import { Sparkles } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 const Welcome = () => {
   const navigate = useNavigate();
   const { setInterests } = useSession();
+  const { unlockBadge } = useAchievement();
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [step, setStep] = useState<number>(1);
   const [consentGiven, setConsentGiven] = useState<boolean>(false);
+  const [currentQuote, setCurrentQuote] = useState<string>("");
+
+  const inspirationalQuotes = [
+    "The only limit to your impact is your imagination and commitment.",
+    "Your career is a journey, not a destination. Enjoy every step.",
+    "Behind every successful woman is a tribe of other successful women who have her back.",
+    "The question isn't who's going to let me; it's who's going to stop me.",
+    "You are never too old to set another goal or to dream a new dream.",
+    "Doubt kills more dreams than failure ever will.",
+    "The best way to predict the future is to create it.",
+    "She believed she could, so she did.",
+    "If they don't give you a seat at the table, bring a folding chair.",
+    "Your time is limited, don't waste it living someone else's life."
+  ];
+
+  // Select a random quote when component mounts
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * inspirationalQuotes.length);
+    setCurrentQuote(inspirationalQuotes[randomIndex]);
+  }, []);
 
   const careerFields = [
     "Technology", "Healthcare", "Finance", "Marketing", 
@@ -32,10 +56,32 @@ const Welcome = () => {
       return;
     }
     
-    if (selectedInterests.length > 0) {
-      setInterests(selectedInterests);
-      navigate('/chat');
+    if (step === 2) {
+      if (selectedInterests.length > 0) {
+        setInterests(selectedInterests);
+        
+        // Trigger confetti and unlock first badge
+        triggerConfetti();
+        unlockBadge('dream-seeker');
+        
+        toast({
+          title: "🎉 Achievement Unlocked!",
+          description: "You've earned the Dream Seeker badge. Your career journey has begun!",
+        });
+        
+        setTimeout(() => {
+          navigate('/chat');
+        }, 1500);
+      }
     }
+  };
+
+  const triggerConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
   };
 
   return (
@@ -43,14 +89,15 @@ const Welcome = () => {
       <div className="container max-w-md mx-auto px-4 py-10 flex-1 flex flex-col">
         {/* Logo and Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-career-primary">Career Companion</h1>
+          <h1 className="text-4xl font-bold text-career-primary">HerRiseUp</h1>
           <p className="text-career-secondary mt-2">Your personal guide to professional growth</p>
+          {step === 1 && <p className="text-career-secondary mt-3 italic">"{currentQuote}"</p>}
         </div>
         
         {/* Step 1: Introduction and Consent */}
         {step === 1 && (
           <div className="bg-white rounded-xl p-6 shadow-sm animate-fade-in flex-1 flex flex-col">
-            <h2 className="text-xl font-semibold text-career-dark mb-4">Welcome to Career Companion</h2>
+            <h2 className="text-xl font-semibold text-career-dark mb-4">Welcome to HerRiseUp</h2>
             
             <p className="text-career-neutralGray mb-4">
               I'm your AI career assistant, designed specifically to help women navigate their professional journeys.
@@ -63,7 +110,7 @@ const Welcome = () => {
             <div className="bg-career-softGray rounded-lg p-4 mb-6">
               <h3 className="text-lg font-medium text-career-secondary mb-2">Your Privacy Matters</h3>
               <p className="text-sm text-career-neutralGray mb-4">
-                Career Companion operates with a privacy-first approach:
+                HerRiseUp operates with a privacy-first approach:
               </p>
               <ul className="text-sm text-career-neutralGray space-y-2 mb-4">
                 <li>• Your conversations are only stored in your device</li>
@@ -96,12 +143,12 @@ const Welcome = () => {
           </div>
         )}
         
-        {/* Step 2: Select Interests */}
+        {/* Step 2: Select Interests (previously Step 3) */}
         {step === 2 && (
           <div className="bg-white rounded-xl p-6 shadow-sm animate-fade-in flex-1 flex flex-col">
-            <h2 className="text-xl font-semibold text-career-dark mb-2">Personalize Your Experience</h2>
+            <h2 className="text-xl font-semibold text-career-dark mb-2">Set Your Career Goals</h2>
             <p className="text-career-neutralGray mb-6">
-              Select your career interests to get tailored guidance:
+              Select areas you'd like to focus on:
             </p>
             
             <div className="grid grid-cols-2 gap-3 mb-6">
@@ -127,11 +174,12 @@ const Welcome = () => {
             )}
             
             <Button
-              className="mt-auto bg-career-primary hover:bg-career-secondary text-white"
+              className="mt-auto bg-career-primary hover:bg-career-secondary text-white flex items-center justify-center"
               onClick={handleContinue}
               disabled={selectedInterests.length === 0}
             >
-              Get Started
+              <Sparkles className="w-4 h-4 mr-2" />
+              Begin Your Journey
             </Button>
           </div>
         )}
